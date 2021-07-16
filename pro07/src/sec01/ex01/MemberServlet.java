@@ -20,17 +20,17 @@ public class MemberServlet extends HttpServlet {
 		PrintWriter out = response.getWriter();
 		MemberDAO dao = new MemberDAO();
 		
-		List list = dao.listMembers();//DB¿¡ Á¢¼Ó, ÁúÀÇ, °á°ú ¹Ş¾Æ¼­ °á°ú °´Ã¼ ¹İÈ¯¹Ş±â
+		List list = dao.listMembers();//DBì— ì ‘ì†, ì§ˆì˜, ê²°ê³¼ ë°›ì•„ì„œ ê²°ê³¼ ê°ì²´ ë°˜í™˜ë°›ê¸°
 		
 		out.print("<html>");
 		out.print("<body>");
 		out.print("<table border=1>");
 		out.print("<tr align='center' bgcolor='lightgreen'>");
-		out.print("<td>¾ÆÀÌµğ</td>");
-		out.print("<td>ºñ¹Ğ¹øÈ£</td>");
-		out.print("<td>ÀÌ¸§</td>");
-		out.print("<td>ÀÌ¸ŞÀÏ</td>");
-		out.print("<td>°¡ÀÔÀÏ</td>");
+		out.print("<td>ì•„ì´ë””</td>");
+		out.print("<td>ë¹„ë°€ë²ˆí˜¸</td>");
+		out.print("<td>ì´ë¦„</td>");
+		out.print("<td>ì´ë©”ì¼</td>");
+		out.print("<td>ê°€ì…ì¼</td>");
 		
 		
 		for(int i=0 ; i<list.size(); i++) {
