@@ -19,21 +19,21 @@ public class LoginServlet4 extends HttpServlet {
 	 * @see Servlet#init(ServletConfig)
 	 */
 	public void init(ServletConfig config) throws ServletException {
-		System.out.println("init ¸Ş¼­µå È£Ãâ");
+		System.out.println("init ë©”ì„œë“œ í˜¸ì¶œ");
 	}
 
 	/**
 	 * @see Servlet#destroy()
 	 */
 	public void destroy() {
-		System.out.println("destroy ¸Ş¼­µå È£Ãâ");
+		System.out.println("destroy ë©”ì„œë“œ í˜¸ì¶œ");
 	}
 
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		System.out.println("doGet ¸Ş¼­µå È£Ãâ");
+		System.out.println("doGet ë©”ì„œë“œ í˜¸ì¶œ");
 		doHandle(request, response);
 	}
 
@@ -41,17 +41,16 @@ public class LoginServlet4 extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		System.out.println("doPost ¸Ş¼­µå È£Ãâ");
+		System.out.println("doPost ë©”ì„œë“œ í˜¸ì¶œ");
 		doHandle(request, response);
 	}
 	protected void doHandle(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		System.out.println("doHandle ¸Ş¼­µå È£Ãâ");
+		System.out.println("doHandle ë©”ì„œë“œ í˜¸ì¶œ");
 		request.setCharacterEncoding("utf-8");
 		String used_id = request.getParameter("user_id");
 		String used_pw = request.getParameter("user_pw");
-		System.out.println("¾ÆÀÌµğ:"+used_id);
-		System.out.println("ÆĞ½º¿öµå"+used_pw);
+		System.out.println("ì•„ì´ë””:"+used_id);
+		System.out.println("íŒ¨ìŠ¤ì›Œë“œ"+used_pw);
 	}
 
 }
-
