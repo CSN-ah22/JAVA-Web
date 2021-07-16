@@ -11,17 +11,17 @@ public class SecondServlet extends HttpServlet {
 
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		System.out.println("doGet ¸Þ¼­µåÈ£Ãâ>>>");
+		System.out.println("doGet ë©”ì„œë“œí˜¸ì¶œ>>>");
 	}
 
 	@Override
 	public void destroy() {
-		System.out.println("destroy ¸Þ¼­µåÈ£Ãâ>>>");
+		System.out.println("destroy ë©”ì„œë“œí˜¸ì¶œ>>>");
 	}
 
 	@Override
 	public void init() throws ServletException {
-		System.out.println("init ¸Þ¼­µåÈ£Ãâ>>>");
+		System.out.println("init ë©”ì„œë“œí˜¸ì¶œ>>>");
 	}
 
 }
