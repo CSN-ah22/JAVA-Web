@@ -21,7 +21,7 @@ public class SecondServlet5 extends HttpServlet {
 		out.print("<html>");
 		out.print("<body>");
 		out.print("name :"+name+"<br>");
-		out.print("dispatch�� �̿��� foward �ǽ��Դϴ�");
+		out.print("dispatch¸¦ ÀÌ¿ëÇÑ foward ½Ç½ÀÀÔ´Ï´Ù");
 		out.print("</body>");
 		out.print("</html>");
 	}
