@@ -6,6 +6,35 @@ pro11 부터는 JSP를 다룹니다 </br>
 </br>
 
 ---
+### 3장
+
+- POST요청에서는 매개변수를 메시지 본문에 넣어 전달한다
+- POST를 대량의 정보 송수신에 사용할 수도 있다
+- GET은 매개변수를 보존할 수 있는 이점이 있다
+- HTML을 전송하기 위한 프로토콜이 HTTP
+- HTTP 통신을 위한 포트번호 : 80
+- IP주소는 점이 3개
+
+### 요청
+
+[HTTP 로 수신된 내용 구성(요청헤더)](https://www.notion.so/HTTP-13ed9964e37d4f638a63e3ad7a0af89b)
+
+[HTTP 로 수신된 내용 구성(메시지 헤더)](https://www.notion.so/HTTP-e31efa1db8114ad0a8851ad83a0af59c)
+
+[웹 서버에 요청 전달하기(GET/POST)](https://www.notion.so/GET-POST-87fdf55b229349b78072cfb6d46e11f5)
+
+---
+
+### 응답
+
+[HTTP의 응답 구조(메시지 본문)](https://www.notion.so/HTTP-d5e924dec4fe46ae916f48a2d7f7a3b2)
+
+[정보를 인터넷으로 전송하는 구조](https://www.notion.so/7adbe48901164fb5b3cdf3c10638a813)
+
+
+
+
+---
 ### 2장
 - CGI가 뭐야?
 
