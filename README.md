@@ -6,6 +6,89 @@ pro11 부터는 JSP를 다룹니다 </br>
 </br>
 
 ---
+## 12장
+### 실습 도중 문제 발생 및 해결 과정
+
+문제발생 1
+
+- 원인
+
+    web.xml에 
+
+    <error-page>
+    <error-code>404</error-code>
+    <location>/err/error_404.jsp</location>
+    </error-page>
+
+    를 사용했을때 지정된 jsp로 실행되지 않음
+
+- 해결 방법
+    - UTF-8
+    - utf-8
+
+    대소문자를 구별하지 않아서 생긴 문제이다
+
+    jsp 이든 html 이든 유티에프팔을 아무렇게나 적으면 안된다
+
+    그렇지 않으면 action 속성이 멋대로 다른 경로를 잡기 때문에 원하던 jsp로 넘어갈 수 없다
+
+    절대 경로를 써도 마찬가지다..
+
+    반드시 통일 되게 쓰자
+
+문제발생2
+
+- 원인
+
+    Several ports (8005, 8080, 8009) required by Tomcat v7.0 Server at localhost are already in use. The server may already be running in another process, or a system process may be using the port. To start this server you will need to stop the other process or change the port number(s).
+
+- 해결 방법
+    - cmd를 연다
+    - netstat -a -n -o -p tcp    를 입력
+    - 로컬 주소열 에서 8009,8090 를 찾는다
+    - 그 줄의 pid값을 본다
+    - taskkill /f /pid 9124
+        - '9124' 부분을 찾은 pid 값으로 바꿔 넣으면 된다
+
+    해결 방법을 찾은 곳:   [https://myblog.opendocs.co.kr/archives/1702](https://myblog.opendocs.co.kr/archives/1702)
+
+문제발생3
+
+- 원인
+
+    [Oracle] ORA-01950: 테이블스페이스 'USERS'에 대한 권한이 없습니다.
+
+- 해결방법
+    - cmd 창에서 sqlplus를 치고
+    - system 계정으로 접속
+    - alter user [유저명] default tablespace users quota unlimited on users;
+    - 유저명 부분에 c##scott      !테이블 명 앞에 c##을 붙이는거 잊지말자!
+
+    이후에는 권한이 부여되어 오류가 나지 않는다
+
+    해결 방법을 찾은곳:  [https://javacatcher.tistory.com/23](https://javacatcher.tistory.com/23)
+
+문제 발생4
+
+- 원인
+
+    Cannot load JDBC driver class 'oracle.jdbc.OracleDriver'
+
+- 해결방법
+
+    JDBC 오라클 드라이버가 없어서 발생한 오류
+
+    <%오라클 설치폴더%>\product\11.2.0\client_1\jdbc\lib
+
+    이 위치로 이동하면 ojdbc6.jar 파일이 존재
+
+    ojdbc6.jar 파일을 WEB-INF 파일의 lib 파일에 넣는다
+
+
+
+
+---
+
 ## 5장
 
 ### 웹 애플리케이션 이란?  :  웹으로 부터 요청을 받아 실행되는 프로그램을 말함
