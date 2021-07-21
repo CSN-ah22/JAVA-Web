@@ -10,10 +10,10 @@ public class MemberVO {
 	private Date joinDate;
 	
 	public MemberVO(){
-		System.out.println("MemberVO °´Ã¼ »ı¼º");
+		System.out.println("MemberVO ê°ì²´ ìƒì„±");
 	}
 	
-	//getter(Á¢±ÙÀÚ),setter(¼³Á¤ÀÚ) --- Ä¸½¶È­
+	//getter(ì ‘ê·¼ì),setter(ì„¤ì •ì) --- ìº¡ìŠí™”
 
 	public String getId() {
 		return id;
@@ -56,6 +56,5 @@ public class MemberVO {
 	}
 	
 	
-	
-	
+		
 }
