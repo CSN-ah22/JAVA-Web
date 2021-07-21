@@ -14,13 +14,13 @@ pro11 부터는 JSP를 다룹니다 </br>
 - 원인
 
     web.xml에 
-
+``` 
     <error-page>
     <error-code>404</error-code>
     <location>/err/error_404.jsp</location>
     </error-page>
-
-    를 사용했을때 지정된 jsp로 실행되지 않음
+```
+위의 코드를 사용했지만 지정된 jsp로 실행되지 않음
 
 - 해결 방법
     - UTF-8
