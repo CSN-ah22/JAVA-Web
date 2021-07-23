@@ -269,10 +269,113 @@ JSP는 HTML CSS 자바스크립트 및 JSP구성요소 등 복잡하게 구성�
     - 웹 애플리케이션에서 DB 연동 작업을 할 때 설정해놓은 JNDI 이름(key)으로 접근하여 작업
 
 ### **JNDI 설정**
+- JDBC 드라이버(ojdbc6.jar)
+    - pro07\WebContent\WEB-INF\lib\에 위치
+- ConnectionPool 관련 jar파일(tomcat-dbcp.jar)
+    - pro07\WebContent\WEB-INF\lib\에 ojdbc6.jar와 같이 위치
+- context.xml
+    - 이클립스에서 생성한 톰캣 서버의 설정 파일
+    - Servers\Tomcat v9.0 Server at localhost-config\에 위치
+- context.xml 파일 설정하기전 ConnectionPool로 연결할 DB 속성 알아보기
+    - 다른 속성은 고정적으로 사용하며, 프로그래머는 주로 drvierClassName, user, password, url만 변경하여 설정
+
+[ConnectionPool로 연결할 데이터베이스 속성](https://www.notion.so/254d26e7808a40fd99686345ae938e05)
+
+**실습**
+
+1. sec2.ex01 생성후 DAO,VO,Servlet 복붙
+2. 매핑 이름을 /member3로 변경
+3. connDB 주석처리
+4. 생성자에서 톰캣 실행 시 톰캣에서 미리 생성한 DataSource를 name값인 jdbc/oracle을 이용해 미리 받아오기
+5. 서블릿에서 listMembers() 메서드를 호출하면, getConnection() 메서드를 호출하여 DataSource에 접근 후 DB와의 연동 작업 수행
+
+**context.xml 설정 예시**
+
+```jsx
+<Resource
+    name="jdbc/oracle"
+    auth="Container"
+    type="javax.sql.DataSource"
+    driverClassName="oracle.jdbc.OracleDriver"
+    url="jdbc:oracle:thin:@localhost:1521:XE"
+    username="scott"
+    password="tiger"
+    maxActive="50"
+    maxWait="-1" />
+```
+
+**분석**
+
+- InitialContext() 을 사용하여 컨텍스트의 생성자 객체 생성
+- **JNDI**에 접근하기위해 기본경로 lookup("java:/comp/env")를 지정한다
+- context.xml에 설정한 name값인 jdbc/oracle으로 미리 연결한 DataSource를 받아온다
+    - lookup("jdbc/oracle")
+- Context 클래스의 메서드 중 JDNI에 접근하기 위한 기본 경로를 지정하고 , context.xml 파일의 엘레먼트를 탐색하는 메서드는?
+    - lookup
+- DataSource 클래스의 메서드 중 데이터베이스에 접속한 후 Connection 객체를 받아오기 위한 메서드는?
+    - getConnection()
+
+### ***완성*** ***sorce***
+
+[JAVA-Web/pro07/src/sec02/ex01 at main · CSN-ah22/JAVA-Web](https://github.com/CSN-ah22/JAVA-Web/tree/main/pro07/src/sec02/ex01)
 
 ### 7.4 DataSource 이용해 회원 정보 등록하기
 
+**실습**
+
+- WebContent에 memberForm.html이라는 회원 가입창 작성
+- <hidden> 태그를 이용해 회원 가입창에서 새 회원 등록 요청을 서블릿에 전달
+- command 값을 받아와 addMember이면 같이 전송된 회원 정보를 받아옴
+- 회원 정보를 MemberVO 객체에 설정한 후 MemberDAO의 메서드로 전달해 SQL문을 이용해 테이블에 추가
+
+**분석**
+
+- PrepareStatement의 **insert**문은 회원 정보를 저장하기 위해 ?(물음표)를 사용
+- ?는 id, pwd, name, age에 순서대로 대응
+- 각 ?에 대응한느 값을 지정하기 위해 PrepareStatement의 setter를 이용
+- setter() 메서드의 첫 번째 인자는 ‘?’의 순서 지정
+- ’?’는 1부터 시작함
+- PreparedStatement 클래스에서 insert, delete, update 문과 같은 SQL문을 질의하기 위해서는
+    - executeUpdate() 메서드를 사용
+
+```jsx
+String query = "insert into t_member";			  // insert 문을 문자열로 생성
+			query += " (id,pwd,name,email)";
+			query += " values(?,?,?,?)";
+			System.out.println("preparedStatement: " + query);
+			pstmt = con.prepareStatement(query);
+			pstmt.setString(1, id);							  // insert문의 각 ?에 순서대로 회원정보를 대입
+			pstmt.setString(2, pwd);
+			pstmt.setString(3, name);
+			pstmt.setString(4, email);
+			pstmt.executeUpdate();							  // 회원정보를 테이블에 추가
+			pstmt.close();
+```
+
 ### 7.5 회원 정보 삭제하기
+
+**실습**
+
+1. WebContent 하위의 기존 html 복붙후 이름과 매핑을 바꿈
+2. sec02.ex03 패키지 생성후 DAO,VO,Servlet 복붙후 매핑 바꿈
+3. 서블릿에 a태그를 이용하여 삭제기능을 구현할 수 있도록 추가
+4. DAO에 삭제 기능 추가
+
+**분석**
+
+```jsx
+con = dataFactory.getConnection();
+			String query = "delete from t_member" + " where id=?";    // delete 쿼리문
+			System.out.println("preparedStatement: " + query);
+			pstmt = con.prepareStatement(query);
+			pstmt.setString(1,  id);								  
+			pstmt.executeUpdate();
+			pstmt.close();
+```
+
+***완성*** ***sorce***
+
+[JAVA-Web/pro07/src/sec02/ex02 at main · CSN-ah22/JAVA-Web](https://github.com/CSN-ah22/JAVA-Web/tree/main/pro07/src/sec02/ex02)
 
 ---
 ## 6장
