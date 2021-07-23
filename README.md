@@ -130,6 +130,151 @@ JSP는 HTML CSS 자바스크립트 및 JSP구성요소 등 복잡하게 구성�
 태그라이브 디렉티브 태그 : 개발자나 프레임워크에서 제공하는 태그를 사용할때 사용합니다
 
 ---
+## 7장
+
+### 7.1 서블릿의 비즈니스 로직 처리 방법
+
+서블릿 비즈니스 처리 작업이란 서블릿이 클라이언트로부터 요청을 받으면 그 요청에 대해 작업을 수행하는 것을 의미한다
+
+대부분의 비즈니스 처리 작업은 데이터 베이스 연동 관련 작업이다
+
+그 외에는 다른 서버와 연동해서 데이터를 얻는 작업도 수행한다
+
+### 7.2 서블릿의 데이터 베이스 연동하기
+
+- 데이터 베이스에 접근하는 클래스 DAO
+- 조회된 데이터를 설정하는 클래스 VO
+
+**서블릿으로 회원 정보 테이블의 회원 정보 조회 단계**
+
+- 웹 브라우저가 서블릿에게 회원 정보를 요청합니다
+- MemberServlet 은 요청을 받은후 MemberDAO 객체를 생성하여 listMembers()메서드를 호출합니다
+- listMembers()에서 다시 connDB()메서드를 호출하여 데이터베이스와 연결한 후 SQL문을 실행해 회원 정보를 조회합니다
+- 조회된 회원 정보는 MemberVO 속성에 설정한 후 다시 ArrayList에 저장됩니다
+- ArrayList를 호출됐던 MemberServlet으로 반환한 후 ArrayList의 MemberVO를 차례대로 가져와 회원 정보를 HTML 태그의 문자열로 만듭니다
+- 만들어진 HTML 태그를 웹 브라우저로 전송해서 회원 정보를 출력합니다
+
+**실습**
+
+1. pro07 프로젝트 생성
+2. 오라클 DB와 연동하는데 필요한 드라이버인 ojdbc6.jar를 프로젝트의 /WebContent/WEB-INF/lib 폴더에 복붙 (다운 [LINK](https://www.oracle.com/database/technologies/jdbcdriver-ucp-downloads.html))
+3. sec01.ex01 패키지 생성후 MemberDAO, MemberServlet, MemberVO 생성
+
+**분석**
+
+- Class.forName() 으로 드라이버를 읽음
+- getConnection() 으로 데이터 베이스에 접속후 Connection 객체를 반환
+- createStatement() 로 statement 인터페이스 생성
+- Statement 클래스의 메서드 중 executeQuery() 을 사용하여 SQL문을 질의함
+- ResultSet 객체를 이용하여 질의 결과를 받음
+- getString("id") 를 이용하여  컬럼 값을 받아옴
+- vo 객체를 선언 후 setID(id) 이런식으로 세팅해준다
+- 설정된 vo 객체를 list.add() 를 사용해 저장한다
+
+    (조회한 레코드의 개수만큼 MemberVO 객체를 저장한다고 함)
+
+- list 반환
+
+---
+
+- MemberServlet 클래스
+    - 브라우저의 요청을 받음
+    - 조회된 결과를 출력함
+- MemberDAO 클래스
+    - DB와 연결
+    - 회원 정보 조회 SQL문을 실행하여 조회한 레코드의 컬럼값을 MemberVO 객체의 속성에 설정한 후 ArrayList에 저장
+    - 조회한 레코드의 개수만큼 MemberVO 객체를 저장한 ArrayList를 반환함
+- MemberVO 클래스
+    - 값을 전달하는 데 사용하는 VO(Value Object) 클래스
+
+    > TIP1. Getter Setter 만들어주는 거 : 우클릭 → Source → Generate Getters and Setters
+
+    ---
+
+### ***완성*** ***sorce***
+
+[JAVA-Web/pro07/src/sec01/ex01 at main · CSN-ah22/JAVA-Web](https://github.com/CSN-ah22/JAVA-Web/tree/main/pro07/src/sec01/ex01)
+
+**PrepareStatement 인터페이스를 이용한 회원 정보 실습**
+
+**설명**
+
+- Statement 인터페이스의 단점
+    - 연동할 때마다 DBMS에서 다시 SQL문을 컴파일해야 하므로 속도가 느림
+    - 단점 보완을 위해 PrepareStatement 를 사용
+- PrepareStatement 인터페이스
+    - SQL문을 미리 컴파일해서 재사용
+    - Statement 인터페이스보다 훨씬 빠르게 DB작업 수행 가능
+    - 데이터베이스와 연동할 때 / 빠른 반복 처리가 필요할 때 사용
+- PrepareStatement 인터페이스 특징
+    - Statement 인터페이스를 상속 → 메서드를 그대로 사용
+    - Statement : DBMS에 전달하는 SQL문은 단순한 문자열임 → DBMS가 스스로 이해할 수 있도록 컴파일 후 실행
+    - PrepareStatement : 컴파일된 SQL문을 DBMS에 전달 → 성능 향상
+    - 실행하려는 SQL문에 “?”를 넣을 수 있음
+    - ”?”값만 바꾸어 손쉽게 설정할 수 있음
+
+**실습**
+
+1. sec01.ex02 생성후 기존에 작성된 DAO,VO,Servlet 복붙
+2. 매핑 이름 /member2로 변경
+3. MemberDAO 클래스를 PrepareStatement를 이용하여 연동하도록 작성
+
+**분석**
+
+- 눈으로 보면 Statement를 사용했을 때와 PrepareStatement 사용 결과가 같다
+- 하지만 DB와 연동할 경우 수행 속도가 좀 더 빠름
+- Statement 클래스의 메서드 또는 PreparedStatement 클래스의 메서드 중 SQL문에 의한 질의 결과를 받기 위한 클래스형의 이름은?
+    - ResultSet
+
+### ***완성*** ***sorce***
+
+[JAVA-Web/pro07/src/sec01/ex02 at main · CSN-ah22/JAVA-Web](https://github.com/CSN-ah22/JAVA-Web/tree/main/pro07/src/sec01/ex02)
+
+### 7.3 DataSource 이용해 데이터 베이스 연동하기
+
+- Statement, PrepareStatement 문제점 : DB 연결에 시간이 많이 걸림
+- 문제점을 극복하기 위해 커넥션풀이 등장함
+
+**커넥션풀 설명**
+
+- 미리 데이터베이스와 연결시킨 상태를 유지하는 기술이라 함
+- 웹 애플리케이션이 실행됨과 동시에 연동할 데이터베이스와의 연결을 미리 설정
+
+**커넥션풀 동작 과정**
+
+- 동작 과정
+    - 톰캣 컨테이너를 실행한 후 응용 프로그램을 실행
+    - 톰캣 컨테이너 실행시 ConenctionPool 객체 생성
+    - 생성된 ConnectionPool 객체는 DBMS와 연결
+    - DB와의 연동 작업이 필요할 경우 응용 프로그램은 ConnectionPool에서 제공하는 메서드를 호출하여 연동
+- 톰캣 컨테이너는 자체적으로 ConnectionPool 기능을 제공
+    - 실행시 톰캣은 설정 파일에 설정된 DB 정보를 이용해 미리 DB와 연결하여 ConnectionPool 객체를 생성
+    - 애플리케이션이 DB와 연동할 일이 생기면 ConnectionPool 객체의 메서드를 호출해 빠르게 연동하며 작업
+
+### 커넥션풀 사용시 필요한 [ JNDI ]
+
+- 웹 애플리케이션에서 Connection Pool 객체를 구현할 때는
+    - Java SE에서 제공하는 javax.sql.DataSource 클래스 이용
+- 웹 애플리케이션 실행시 톰캣이 만들어놓은 ConnectionPool 객체 접근시에는
+    - JNDI 이용
+- **JNDI(Java Naming and Directory Interface)란?**
+    - 필요한 자원을 키/값(key/value) 쌍으로 저장한 후 필요할 때 키를 이용해 값을 얻는 방법
+    - 접근할 자원에 미리 키를 지정한 후, 애플리케이션이 실행중일 때 이 키를 이용해 자원에 접근하여 작업
+- JNDI 사용 예
+    - 웹 브라우저에서 name/value 쌍으로 전송한 후 서블릿에서 getParameter(name)으로 값을 가져올 때
+    - 해시맵(HashMap)이나 해시테이블(HashTable)에 키/값으로 저장한 후 키를 이용해 값을 가져올 때
+    - 웹 브라우저에서 도메인 네임으로 DNS 서버에 요청할 경우 도메인 네임에 대한 IP 주소를 가져올 때
+- 톰캣 컨테이너가 ConnectionPool 객체를 생성하면?
+    - 이 객체에 대한 JNDI 이름(key)을 미리 설정
+    - 웹 애플리케이션에서 DB 연동 작업을 할 때 설정해놓은 JNDI 이름(key)으로 접근하여 작업
+
+### **JNDI 설정**
+
+### 7.4 DataSource 이용해 회원 정보 등록하기
+
+### 7.5 회원 정보 삭제하기
+
+---
 ### 6장
 
 - 서블릿 기본 기능 수행 과정
