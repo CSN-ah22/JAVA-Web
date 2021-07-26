@@ -15,7 +15,6 @@ pro11 부터는 JSP를 다룹니다 </br>
 
 [JSP의 여러가지 액션 태그](https://www.notion.so/a64f119cc9e84ea0b3c6db8ccf0a6f23)
 
-### 13.2 포워드 액션 태그 사용하기
 
 - 인클루드 디렉티브 태그처럼 화면을 분활해서 관리할때 사용
 - 즉 공통적으로 사용하는 상단 부분이나 왼쪽 메뉴바를 재사용 할때 사용됨
@@ -38,6 +37,58 @@ pro11 부터는 JSP를 다룹니다 </br>
 - 액션태그는 param 액션태그를 이용해 동적 처리 가능 / 디렉티브 태그는 정적 처리만 가능
 - 액션태그는 포함되는 JSP 가 각각 자바 파일로 생성됨 / 디렉티브 태그는 포함하는 JSP 에 합쳐진 후 한개의 자바파일로 생성
 - 액션태그는 요청시에 처리 / 디렉티브 태그는 JSP 를 자바 파일로 변환시 처리됨
+
+### 13.2 포워드 액션 태그 사용하기
+- 서블릿에서 다른 서블릿으로 이동하는걸 포워딩 이라 했음
+- RequestDispatcher 를 이용하는 방법 대신에
+- 액션태그의 포워딩 방법을 쓰면 훨씬 쉬움
+
+**형식**
+
+```jsx
+<jsp:forward page="포워딩할 jsp 페이지">
+	...
+</jsp:include>
+```
+
+**분석**
+- 문제가 있음. 
+- 로그인 할때 아이디를 입력하지 않으면 주의를 주는 문구가
+- 최초로 접속하면 나타남
+- 해결방법으로 param 액션태그를 사용해서 처리해보았다
+
+**Param + forwarding**
+```jsx
+//login.jsp 일부
+<%
+String msg=request.getParameter("msg"); //브라우저에서 접속 시에 msg값을 가져와서 표시, 
+최초 접속시에는 null이므로 아무것도 표시하지 않음
+if(msg!=null){
+%>
+<h1><%=msg %></h1>
+<%
+}
+%>
+```
+
+```jsx
+//result2.jsp 일부
+<%
+String msg="아이디를 입력하지 않았습니다 아이디를 입력해주세요";//login.jsp로 전달할 오류 메시지를 선언함
+%>
+
+<%
+String userID = request.getParameter("userID");// ID입력값 가져오기
+if(userID.length()==0){ //이름값의 길이가 0 이라면
+%>
+<jsp:forward page="login2.jsp"> //login2.jsp에 넘어가기 + 데이터 전송
+<jsp:param value="<%= msg %>" name="msg"/> //msg란 이름으로 오류 메세지 배달
+</jsp:forward>
+<%
+}
+%>
+<h1>환영합니다 <%=userID %>님!!</h1> //else문, ID를 썼을경우
+```
 
 ### 13.3 useBean, setPropery, getProperty 액션 태그 사용하기
 
