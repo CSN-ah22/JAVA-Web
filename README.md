@@ -62,7 +62,7 @@ pro11 부터는 JSP를 다룹니다 </br>
 //login.jsp 일부
 <%
 String msg=request.getParameter("msg"); //브라우저에서 접속 시에 msg값을 가져와서 표시, 
-최초 접속시에는 null이므로 아무것도 표시하지 않음
+					//최초 접속시에는 null이므로 아무것도 표시하지 않음
 if(msg!=null){
 %>
 <h1><%=msg %></h1>
