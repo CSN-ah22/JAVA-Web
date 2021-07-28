@@ -170,6 +170,129 @@ public MemberBean(String id, String pwd, String name, String email) {
 
 [JAVA-Web/pro13/src/sec01/ex01 at main · CSN-ah22/JAVA-Web](https://github.com/CSN-ah22/JAVA-Web/tree/main/pro13/src/sec01/ex01)
 
+### 2.  유즈빈 액션 태그를 이용한 회원 정보 조회 실습
+
+**설명**
+
+- 자바 빈을 자주 사용할 경우 화면이 복잡해지는 단점이 있음
+- 이러한 단점을 보완하기 위해 나온것이 유즈빈 액션 태그임
+
+**형식**
+
+<jsp:useBean id="빈 이름" class="패키지 이름을 포함한 자바 빈 클래스" [scope="접근범위"]/>
+
+- id는 JSP 페이지에서 자바 빈 객체에 접근할 때 사용할 이름을 의미함
+- class는 패키기 이름을 포함한 자바 빈 이름을 말함
+- scope는 자바 빈에 대한 접근 범위를 지정하는 역할
+
+**실습**
+
+- WebContent에 member2.jsp 추가
+- <jsp:useBean> 액션 태그를 이용하여 MemberBean 클래스에 대해 id가 m인 빈을 생성한다
+- <jsp:useBean> 액션 태그는 직접 MemberBean 객체를 생성한다는것과 같은 역할을 함
+- m 의 setter를 이용해 입력값을 생성자에 전달합니다
+
+### 완성 src
+
+[JAVA-Web/member2.jsp at main · CSN-ah22/JAVA-Web](https://github.com/CSN-ah22/JAVA-Web/blob/main/pro13/WebContent/member2.jsp)
+
+### 3. setProperty/getProperty 액션 태그를 이용한 회원 정보 실습
+
+- setter를 이용하지  않고 속성값을 설정하고 싶을때 사용 (빈의 생성자 필요 없어짐)
+- setProperty : useBean의 속성에 값을 설정하는 태그
+- getProperty : useBean의 속성 값을 얻는 태그
+
+- **setProperty  형식**
+
+<jsp:getProperty name="자바 빈 이름"  property="속성이름" value="값" />
+
+- name : <jsp:useBean> 액션 태그의 id 이름
+- property: 값을 설정할 속성 이름
+- value: 속성에 설정할 속성값 (입력값)
+
+- **getProperty  형식**
+
+<jsp:getProperty name="자바 빈 이름"  property="속성이름" />
+
+- name : <jsp:useBean> 액션 태그의 id 이름
+- property: 값을 얻을  속성 이름
+
+- **실습 - 자바의 setter를 사용하지 않고 빈 속성을 설정하기**
+    - member3~7.jsp 생성
+    - member3 에 <jsp:setProperty> 액션태그를 이용해 빈의 속성을 설정한다
+    - 스크립 트릿이 필요 없음 ! (헷갈리지 말기)
+
+    ```java
+    <jsp:useBean id='m' class="sec01.ex01.MemberBean" scope="page"/>
+    <jsp:setProperty name="m" property="id" value='<%= request.getParameter("id") %>' />
+    <jsp:setProperty name="m" property="pwd" value='<%= request.getParameter("pwd") %>' />
+    <jsp:setProperty name="m" property="name" value='<%= request.getParameter("name") %>' />
+    <jsp:setProperty name="m" property="email" value='<%= request.getParameter("email") %>' />
+    ```
+
+    - member4 작성
+        - html 의 input 태그의 name을 MemberBean의 속성 이름과 동일하게 설정한다
+        - <jsp:setProperty> 액션태그의 param 속성을 이용해 html에서 전달된 매개변수 이름으로 useBean의 속성에 자동으로 값을 설정한다
+
+            ```java
+            <jsp:useBean id='m' class="sec01.ex01.MemberBean" scope="page"/>
+            <jsp:setProperty name="m" property="id" param="id" />
+            <jsp:setProperty name="m" property="pwd" param="pwd" />
+            <jsp:setProperty name="m" property="name" param="name" />
+            <jsp:setProperty name="m" property="email" param="email" />
+            ```
+
+        - getParameter 를 사용하지 않는것이 장점
+
+    - member5 작성
+        - <jsp:setProperty> 액션태그에 param 속성을 생략
+        - property 속성 이름만 지정해도 html에서 전달받은 매개변수중 같은 매개변수 값을 자동으로 설정해준다
+
+            ```java
+            <jsp:useBean id='m' class="sec01.ex01.MemberBean" scope="page"/>
+            <jsp:setProperty name="m" property="id"/>
+            <jsp:setProperty name="m" property="pwd"/>
+            <jsp:setProperty name="m" property="name" />
+            <jsp:setProperty name="m" property="email" />
+            ```
+
+    - member6 작성
+        - <jsp:setProperty> 액션태그의 property 속성에 * 을 지정한다
+        - JSP 에서 자동으로 매개변수 이름과 속성 이름을 비교한 후 같은 이름의 속성 이름에 전달된 값을 알아서 설정해준다
+        - 따라서 JSP 나 HTML 페이지에서 전달된 데이터를 처리할때 미리 매개변수 이름과 속성 이름을 동일하게 설정하여 편리하게 사용할 수 있음
+
+        ```java
+        <jsp:useBean id='m' class="sec01.ex01.MemberBean" scope="page"/>
+        <jsp:setProperty name="m" property="*"/>
+        ```
+
+- member7 작성
+    - html에서 전달받은 입력값을 setProperty 을 사용해서 저장
+    - <jsp:getProperty> 액션태그를 이용해서 useBean의 속성에 접근하여 값을 출력한다
+
+        ```java
+        <jsp:useBean id='m' class="sec01.ex01.MemberBean" scope="page"/>
+        <jsp:setProperty name="m" property="*"/>
+
+        <tr align="center">
+        <td>
+        <jsp:getProperty name="m" property="id" />
+        </td>
+        <td>
+        <jsp:getProperty name="m" property="pwd" />
+        </td>
+        <td>
+        <jsp:getProperty name="m" property="name" />
+        </td>
+        <td>
+        <jsp:getProperty name="m" property="email" />
+        </td>
+        </tr>
+        ```
+
+    ### 전체 src
+
+    [JAVA-Web/pro13/WebContent at main · CSN-ah22/JAVA-Web](https://github.com/CSN-ah22/JAVA-Web/tree/main/pro13/WebContent)
 ---
 ## 12장
 ### 실습 도중 문제 발생 및 해결 과정
