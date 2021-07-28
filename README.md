@@ -92,6 +92,64 @@ if(userID.length()==0){ //이름값의 길이가 0 이라면
 
 ### 13.3 useBean, setPropery, getProperty 액션 태그 사용하기
 
+- 디자이너 입장에서는 자바의 getter나 setter를 사용하는 것보다는 태그를 사용하는게 쉬움
+- useBean, setProperty, getProperty 액션 태그를 사용해 객체 생성부터 속성에 값을 저장하거나 가져오는 방법에 대해 알아보는것이 목표
+- 자바 빈에 대해 우선적으로 알아보겠음
+
+### 1.  **자바빈에 대해**
+
+- 프로그래밍시 여러 객체를 거치면서 만들어지는 데이터를 저장하거나 전달하는데 사용함
+- 서블릿의 VO클래스 또는 자바의 DTO 클래스 같은 개념이라고 할 수 있음
+- 자바 빈을 만드는것은 VO클래스를 만드는 방법과 같음
+
+**특징**
+
+- 속성의 접근 제한자는 private 이다
+- 각 속성은 각각의 getter/setter를 가진다
+- 기본 생성자를 반드시 가지며 다른 생성자도 추가할 수 있다
+
+### 2. 자바 빈을 이용한 회원 정보 조회 실습
+
+🍑 🍋🍑 🍋 🍑
+
+### 1. 밑바탕 준비
+
+- sec01.ex01 패키지 생성
+- MemberBean, MemberDAO 클래스를 추가 (서블릿X 자바O)
+- member.jsp와 memberForm.html을 생성함
+
+🍑 🍋🍑 🍋 🍑
+
+### 2. MemberBean 작성
+
+- MemberBean = MemberVO 똑같이 구성한다
+- 아래의 생성자를 추가한다
+
+```java
+public MemberBean(String id, String pwd, String name, String email) {
+    	this.id=id;
+    	this.pwd=pwd;
+    	this.name=name;
+    	this.email=email;
+    }
+```
+
+🍑 🍋🍑 🍋 🍑
+
+### 3. html 작성
+
+1. 회원 정보를 입력한 후 member.jsp로 전송하도록 memberForm.html 작성 (POST)
+
+🍑 🍋🍑 🍋 🍑
+
+### 4. jsp 작성
+
+1. member.jsp 에서 getParameter() 메서드로 입력값을 가져온다
+2. MemberBean 객체를 생성하여 입력된 정보를 생성자에 설정한다
+3. DAO객체를 만들고 addMember() 메서드를 호출하여 입력정보를 매개변수로써 넣어준다
+4. 성공적으로 끝나면 listMembers() 메서드 또한 호출한다
+5. listMembers() 의 반환값을 받아 표현식으로 출력한다
+
 ---
 ## 12장
 ### 실습 도중 문제 발생 및 해결 과정
