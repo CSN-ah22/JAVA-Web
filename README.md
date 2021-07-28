@@ -150,6 +150,26 @@ public MemberBean(String id, String pwd, String name, String email) {
 4. 성공적으로 끝나면 listMembers() 메서드 또한 호출한다
 5. listMembers() 의 반환값을 받아 표현식으로 출력한다
 
+### DAO 수정
+
+**listMembers() 메서드 수정**
+
+- MemberVO 객체 대신 MemberBean 객체 생성
+- MemberBean 객체의 setter 를 호출해 회원 정보를 생성자에 저장한다
+    - 회원 정보는 조회 query 문으로 읽어온 것을 사용
+- List에 다시 MemberBean 객체를 저장함
+
+**addMember() 메서드 수정**
+
+- addMember() 메서드의 매개변수로 MemberBean 객체를 받는다 (회원정보가 들어있음)
+- MemberBean 객체의 getter를 호출해 회원 정보를 가져온다
+- query 문을 pstmt 를 이용해 데베에 전달한다
+- 회원 추가 반영
+
+### 완성 src
+
+[JAVA-Web/pro13/src/sec01/ex01 at main · CSN-ah22/JAVA-Web](https://github.com/CSN-ah22/JAVA-Web/tree/main/pro13/src/sec01/ex01)
+
 ---
 ## 12장
 ### 실습 도중 문제 발생 및 해결 과정
