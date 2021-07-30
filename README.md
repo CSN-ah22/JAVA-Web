@@ -563,15 +563,8 @@ response.setContentType("text/html; charset=utf-8");
     즉 서블릿끼리 자원(데이터)을 공유하는데 사용한다
 
 - 서블릿과 컨테이너 간의 연동을 위해 사용한다
-[getAttribute(String name)](https://www.notion.so/getAttribute-String-name-ab8f98523548429f90d37b8733ea4180)
 
-[getInitParameter(String name)](https://www.notion.so/getInitParameter-String-name-8e064fe9b1cf49159c16329edf6be1a1)
-
-[setAttribute(String name, Object object)](https://www.notion.so/setAttribute-String-name-Object-object-56ba5b1201b246f981d98a585ef93717)
-
-[ServletContex context = getServeltContext();](https://www.notion.so/ServletContex-context-getServeltContext-af8c59e6c17c40ec8504afdc61b1b150)
-
-[getResourceAsStream("/WEB-INF/bin/init.txt")](https://www.notion.so/getResourceAsStream-WEB-INF-bin-init-txt-224d4bdabc71489c99531e8c56d2c470)
+[ServletContext에서 제공하는 메서드](https://www.notion.so/5db516220a29457fbb6d6f64eadbb03a)
 
 ### 8.6 load-on-startup 기능  사용하기
 
