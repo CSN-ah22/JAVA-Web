@@ -416,6 +416,157 @@ JSP는 HTML CSS 자바스크립트 및 JSP구성요소 등 복잡하게 구성�
 인클루드 디렉티브 태그 : 공통으로 사용하는 JSP 페이지를 다른 JSP 페이지에 추가할때 사용함
 
 태그라이브 디렉티브 태그 : 개발자나 프레임워크에서 제공하는 태그를 사용할때 사용합니다
+---
+## 8장
+
+### 8.1 서블릿 포워드 기능 사용하기
+
+- 포워드: 하나의 서블릿에서 다른 서블릿이나 JSP와 연동하는 방법을 포워드 라고 한다
+    - 서블릿에서 다른 서블릿이나 JSP로 요청을 전달하는 역할임
+    - 이 요청을 전달할때 추가 데이터를 포함시켜서 전달할 수도 있다
+        - 요청에 대한 추가 작업을 다른 서블릿에게 수행하게 한다
+        - 요청에 포함된 정보를 다른 서블릿이나 JSP와 공유할 수 있다
+        - 요청에 정보를 포함시켜 다른 서블릿에 전달할 수 있다
+        - 모델2 개발시 서블릿에서 JSP로 데이터를 전달하는데 사용됨
+
+### 8.2 서블릿의 여러 가지 포워드 방법
+
+- redirect 방법
+    - HttpServletResponse 객체의 sendRedirect() 메서드를 이용함
+    - 웹 브라우저에 재요청 하는 방식
+    - 형식: sendRedirect("포워드할 서블릿 또는 JSP ");
+- Refresh 방법
+    - HttpServletResponse 객체의 addHeader() 메서드를 이용함
+    - 웹 브라우저에 재요청 하는 방식
+    - 형식: response.addHeader("Refresh",경과시간(초);url=요청할 서블릿 또는 JSP");
+- location 방법
+    - 자바스크립트 location 객체의 href속성을 사용함
+    - 자바스크립트에서 재요청 하는 방식
+    - 형식: location.href='요청할 서블릿 또는 JSP ';
+- dispatch 방법
+
+    🍋 다른 방식과의 차이점
+
+    🍋 서블릿에서 클라이언트를 거치지 않고 바로 다른 서블릿에게 요청하는 방법임
+
+    🥭따라서 주소창의 URL이 변경되지 않는다
+
+    - RequestDispatcher 클래스의 forward() 메서드를 이용함
+    - 형식: RequestDispatcher dis= request.getRequestDispatcher("포워드할 서블릿 또는 JSP");
+
+                 dis.forward(request.response);
+
+### 8.3 dispatch를 이용한 포워드 방법
+
+1. 준비
+- sec03.ex01 패키지에 두개의 서블릿(FirstServlet.java, SecondServlet.java) 클래스 추가
+
+1. 실습
+- FirstServlet 작성
+    - RequestDispatcher 클래스를 이용해 두번째 서블릿인 second를 지정한 후 forward() 메서드를 이용해 포워드 한다
+
+        ```jsx
+        RequestDispatcher dis= request.getRequestDispatcher("second");
+        dis.forward(request.response); //world아님 word아님 철자주의!
+        ```
+
+- SecondServlet에 화면 구성
+
+    ```jsx
+    response.setContentType("text/html; charset=utf-8");
+    		PrintWriter out = response.getWriter();
+    		out.print("<html>");
+    		out.print("<body>");
+    		out.print("dispatch를 이용한 forward 실습입니다");
+    		out.print("</body>");
+    		out.print("</html>");
+    ```
+
+1. 실행
+    - 두번째  서블릿의 "dispatch를 이용한 forward 실습입니다" 가 출력됨
+    - 웹 브라우저 주소창의 URL이 변경되지 않음
+    - 이는 포워드가 서버 안에서만 실행되었기 때문임
+
+2. forward 사용 + GET방식으로 데이터를 전송해보기
+- FirstServlet 작성
+
+```jsx
+RequestDispatcher dis= request.getRequestDispatcher("second?name=lee");
+dis.forward(request.response); //world아님 word아님 철자주의!
+```
+
+- SecondServlet에 화면 구성
+
+```jsx
+response.setContentType("text/html; charset=utf-8");
+		PrintWriter out = response.getWriter();
+		String name = request.getParameter("name");
+		out.print("<html>");
+		out.print("<body>");
+		out.print("name :"+name+"<br>");
+		out.print("dispatch를 이용한 forward 실습입니다");
+		out.print("</body>");
+		out.print("</html>");
+```
+
+### 8.4 바인딩
+
+- Dispatcher 로 값을 전달시 GET 방식으로 전달하는건 데이터 양이 적을때는 편리함
+- 하지만 GET은 보안성과 대량의 데이터에는 불편하다는 단점이 있음
+- 따라서  대량의 정보를 서블릿에서 다른 서블릿 또는 JSP로 전달할때는 바인딩을 사용
+- 바인딩의 사전적 의미는 "두 개를 하나로 묶는다" 임
+
+[바인딩 메서드](https://www.notion.so/cad74d5d50f74c0bbf5a4db4dbd1fe43)
+
+### HttpServletRequest를 이용한 dispatch 포워딩 + 바인딩
+
+### 설명
+
+- 바인딩시 dispatch로만 제대로 가능함
+- 이유는 First 서블릿에서 Second 서블릿으로 전달되는 request가 브라우저를 거치지 않고 바로 전달되기 때문에 첫번째 서블릿의 request 객체에 바인딩된 데이터가 두번째 서블릿에 그대로 전달된다
+- 자바의 모든 자료형이 전달 가능하다
+
+### 실습
+
+- FirstServlet 작성
+
+    ```jsx
+    response.setContentType("text/html; charset=utf-8");
+    		PrintWriter out = response.getWriter();
+    		request.setAttribute("address", "서울시 성북구"); //바인딩
+    		RequestDispatcher dispatch = request.getRequestDispatcher("second"); //전달
+    		dispatch.forward(request,response);
+    ```
+
+- SecondServlet 작성
+
+    ```jsx
+    response.setContentType("text/html; charset=utf-8");
+    		PrintWriter out = response.getWriter();
+    		String address = (String)request.getAttribute("address"); //값 받아옴
+    		out.print("<html>");
+    		out.print("<body>");
+    		out.print("address :"+address+"<br>");
+    		out.print("sendredirect");
+    		out.print("</body>");
+    		out.print("</html>");
+    ```
+
+### 8.5 ServletContext와 ServletConfig 사용법
+
+### ServletContex 설명
+
+- 톰캣 컨테이너 실행 시 각 컨텍스트(웹애플리케이션)마다 한 개의 ServletContex객체를 생성한다
+- 톰캣 컨테이너가 종료되면 ServletContex객체도 소멸된다
+- ServletContex객체는  웹 애플리케이션이 실행되면서 애플리케이션 공통의 자원(데이터)를 미리 바인딩 해서 서블릿들이 공유하여 사용한다
+
+    즉 서블릿끼리 자원(데이터)을 공유하는데 사용한다
+
+- 서블릿과 컨테이너 간의 연동을 위해 사용한다
+
+[ServletContext에서 제공하는 메서드](https://www.notion.so/5db516220a29457fbb6d6f64eadbb03a)
+
+### 8.6 load-on-startup 기능  사용하기
 
 ---
 ## 7장
