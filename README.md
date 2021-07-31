@@ -566,7 +566,100 @@ response.setContentType("text/html; charset=utf-8");
 
 [ServletContext에서 제공하는 메서드](https://www.notion.so/5db516220a29457fbb6d6f64eadbb03a)
 
-### 8.6 load-on-startup 기능  사용하기
+### 1. ServletContext의 바인딩 기능
+
+- Resources 파일에 sec05.ex01 패키지 생성
+- 패키지 안에 GetServletContext, SetServletContext 클래스 파일 생성
+
+    ### 1-2) SetServletContext 클래스 작성
+
+    - getServletContext() 메서드를 이용해 ServletContext객체를 가져온다
+    - 바인딩할 값을 ArrayList에 저장한다
+    - setAttribute() 메서드를 이용해 저장된 ArrayList 변수를 바인딩 한다
+
+    ```jsx
+    request.setCharacterEncoding("utf-8");
+    		response.setContentType("text/html;charset=utf-8");
+    ServletContext context = getServletContext();
+    		
+    		List member = new ArrayList();
+    		member.add("이순신");
+    		member.add(30);
+    		context.setAttribute("member", member);
+    ```
+
+    ### 1-3) GetServletContext 클래스 작성
+
+    - getServletContext() 메서드를 이용해 ServletContext객체를 가져온다
+    - getAttribute()메서드를 이용해 바인딩했던 값을 가져와 출력한다
+
+    ```jsx
+    request.setCharacterEncoding("utf-8");
+    		response.setContentType("text/html;charset=utf-8");
+    		PrintWriter out = response.getWriter();
+
+    		ServletContext context = getServletContext();
+    		List member = (List)context.getAttribute("member");
+    		String name = (String)member.get(0);
+    		int age = (int)member.get(1);
+    		out.print(name + age);
+    ```
+
+- 모든 서블릿들이 접근 가능하다, 모든 서블릿들이 공통으로 사용하는 데이터는 ServletContext에 바인딩 하는것이 편함
+
+### *완성 src*
+
+[JAVA-Web/pro08/src/sec05/ex02 at main · CSN-ah22/JAVA-Web](https://github.com/CSN-ah22/JAVA-Web/tree/main/pro08/src/sec05/ex02)
+
+### 2. ServletContext 매개변수 설정 기능
+
+- 대부분의 웹 애플리케이션에서 메뉴는 공통으로 사용하는 기능이다
+- web.xml에 지정해놓고 프로그램 시작시 가져와서 사용하면 편리하다
+- 새로운 메뉴 항목이 생겨나거나 삭제할때 쉽게 수정이 가능하다
+
+    ### 🍎2-1) web.xml 에 메뉴항목 설정
+
+    ```jsx
+    <Context-param>
+    <param-name>menu_member</param-name>
+    <param-value>회원등록 회원조회 회원수정</param-value>
+    </context-param>
+    ```
+
+    ### 🍎2-2)ContextParamServlet클래스 작성
+
+    ```jsx
+    request.setCharacterEncoding("utf-8");
+    		response.setContentType("text/html;charset=utf-8");
+    		PrintWriter out = response.getWriter();
+
+    		ServletContext context = getServletContext();
+    		String menu_member = context.getInitParameter("menu_member");
+    		//web.xml의 <param-name> 값으로 value값을 받아온다
+
+    		out.print(menu_member);
+    ```
+
+- 이 또한 모든 웹브라우저(익스플로러, 크롬)에서 공유가 가능하다
+
+### 🍎ServletContext 매개변수 설정 기능***완성 src***
+
+[JAVA-Web/ContextParameterServlet.java at main · CSN-ah22/JAVA-Web](https://github.com/CSN-ah22/JAVA-Web/blob/main/pro08/src/sec05/ex02/ContextParameterServlet.java)
+
+### 3. ServletContext 파일 입출력 기능 🍀
+
+- ServletContext의 파일에서 데이터를 읽어오는 기능을 알아보려한다
+- WEB-INF 폴더에 > bin 폴더를 만들고 > init.txt 파일을 생성한다
+- init.txt에 아무거나 입력후 저장
+- getResourceAsStream() 메서드에서 읽어들일 파일 위치를 지정한다
+- InputStreamReader() 객체로 해당 위치의 파일을 읽어들임
+- BuffereaReader 객체로 데이터가 모일때까지 기다렸다가 한방에 처리함
+- while문 + buffer.readLine() 로 데이터를 읽으면서 변수에 저장
+- 변수 출력
+
+### 🍀 ServletContext 파일 입출력 기능 완성src
+
+[JAVA-Web/ContextFileServlet.java at main · CSN-ah22/JAVA-Web](https://github.com/CSN-ah22/JAVA-Web/blob/main/pro08/src/sec05/ex03/ContextFileServlet.java)
 
 ---
 ## 7장
