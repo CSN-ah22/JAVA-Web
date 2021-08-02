@@ -14,11 +14,11 @@ import javax.servlet.http.HttpServletResponse;
  * Servlet implementation class InitParamServlet
  */
 @WebServlet(
-		urlPatterns = { 
+		urlPatterns = { //urlPaterns를 이용해 매핑 이름을 여러개 설정할 수 있습니다	
 				"/sInit", 
 				"/sinit2"
-		}, 
-		initParams = { 
+		}, 	
+		initParams = { 	//@WebInitParam을 이용해 여러 개의 매개변수를 설정할 수 있습니다
 				@WebInitParam(name = "email", value = "csa2676@naver.com"), 
 				@WebInitParam(name = "tel", value = "010-1111-2222")
 		})
@@ -33,7 +33,7 @@ public class InitParamServlet extends HttpServlet {
 		response.setContentType("text/html;charset=utf-8");
 		PrintWriter out = response.getWriter();
 		String email = getInitParameter("email");
-		String tel = getInitParameter("tel");
+		String tel = getInitParameter("tel"); //설정한 매개변수의 name으로 값을 가져옵니다
 		out.print("email:" + email+"<br>");
 		out.print("tel:" + tel+"<br>");
 	}
