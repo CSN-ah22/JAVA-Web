@@ -661,6 +661,22 @@ response.setContentType("text/html; charset=utf-8");
 
 [JAVA-Web/ContextFileServlet.java at main · CSN-ah22/JAVA-Web](https://github.com/CSN-ah22/JAVA-Web/blob/main/pro08/src/sec05/ex03/ContextFileServlet.java)
 
+### ServletConfig 설명
+
+- 서블릿 API 임
+- ServletContext 는 각 Context 객체에 대해 생성되는거고 ServletConfig는 각 Servlet객체에 대해 생성되는 것
+- 다른 서블릿과 공유 불가 , 값 읽기만 가능
+- 서블릿이 소멸되면 같이 소멸됨
+
+- ServletConfig가 제공하는 기능
+
+- @WebServlet 애너테이션을 이용하여 서블릿을 초기화 한다
+- getInitParameter() 메서드로 초기 객체 값을 가져온다
+- 자세한건 코드에 설명함
+- 
+### ⚾ @WebServlet 애너테이션을 이용한 서블릿 설정 완성src
+[JAVA-Web/InitParamServlet.java at main · CSN-ah22/JAVA-Web](https://github.com/CSN-ah22/JAVA-Web/blob/main/pro08/src/sec06/ex01/InitParamServlet.java)
+
 ---
 ## 7장
 
