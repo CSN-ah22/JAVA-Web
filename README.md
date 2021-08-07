@@ -92,7 +92,50 @@ pro11 부터는 JSP를 다룹니다 </br>
 
 ### 🌹파일 업로드 완성 참고 사이트
 
-[https://dololak.tistory.com/720](https://dololak.tistory.com/720)	
+[https://dololak.tistory.com/720](https://dololak.tistory.com/720)
+	
+---
+## 14장
+
+## <c:set> 태그로 간단하게 빈에 값을 설정하기
+
+- 예를 들어 설명하겠숨
+- 먼저 Bean 코드
+
+```jsx
+class Board {
+
+  private String title;
+  public void setTitle(String title) {
+    this.title = title;
+  }
+
+  public String getTitle() {
+    return title;
+  }
+
+}
+
+출처: https://offbyone.tistory.com/366 [쉬고 싶은 개발자]
+```
+
+- spring 에서 사용하는 model 객체를 사용해서 bean에 bord라고 할당했숨
+
+```jsx
+model.addAttribute("board", new Board());
+
+출처: https://offbyone.tistory.com/366 [쉬고 싶은 개발자]
+```
+
+- 값을 바꾸고 싶을땐 <c:set> 태그로 가볍게!
+
+```jsx
+<c:set target="${board}" property="title" value="제목을 변경합니다." />
+<c:out value="${board.title}" />
+
+출처: https://offbyone.tistory.com/366 [쉬고 싶은 개발자]
+```	
+	
 ---
 ## 13장
 
