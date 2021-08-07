@@ -4,6 +4,73 @@ pro05~pro10 파일까지는 servlet을 다루고 </br>
 pro11 부터는 JSP를 다룹니다 </br>
 감사합니다 🌼</br>
 </br>
+---
+## 15장 - 파일 업로드, 파일 다운로드
+
+## enctype 의 속성 **Multipart**
+
+- **enctype**
+- **폼 데이터(form data)가 서버로 제출될 때 해당 데이터가 인코딩되는 방법을 명시합니다.**
+- 참고 사이트
+
+    [Multipart/form-data란?](https://junghyun100.github.io/Multipart_form-data/)
+
+# **enctype 속성값**
+
+- application/x-www-form-urlencoded
+
+    > default 값으로, 모든 문자들을 서버로 보내기 전에 인코딩됨을 명시합니다.
+
+- text/plain
+
+    > 공백 문자(space)는 “+” 기호로 변환하지만,나머지 문자는 모두 인코딩되지 않음을 명시합니다.
+
+- multipart/form-data ( ★ 오늘의 포스팅 주제)
+
+    > 모든 문자를 인코딩하지 않음을 명시합니다.이 방식은 <form> 요소가 파일이나 이미지를 서버로 전송할 때 주로 사용합니다
+
+# **getParameter()의 사용이 불가한 이유**
+
+`POST` 방식에서 `request.getParameter()`메서드를
+
+`WAS`에서 알아서 처리할 수 있도록 되어있는 이유는
+
+`form`에서 method가 `POST`방식일 때는 디폴트값으로
+
+`enctype="application/x-www-form-urlencoded"` 옵션이 설정 되어있기 때문에
+
+이를 `WAS`에서 인식하고 알아서 `in`/`output`방식으로 데이터를 처리하기 때문입니다.
+
+따라서. 이미지를 위해서 전송하는 경우 `enctype`가 `Multipart`로 설정해야하기 때문에
+
+`request.getParameter()`로 데이터를 불러올 수 없게 됩니다.
+
+# **Multipart가 생긴 이유**
+
+파일을 업로드 할 때, 사진 설명을 위한 `input`과 사진을 위한 `input` 2개가 들어간다고 가정합니다.
+
+이 두 `input` 간에 `Content-type`은 사진 설명은 `application/x-www-form-urlencoded` 이 될 것이고,
+
+사진 파일은 `image/jpeg`입니다.
+
+두 종류의 데이터가 하나의 `HTTP Request Body`에 들어가야 하는데,
+
+한 `Body`에서 이 2 종류의 데이터를 구분에서 넣어주는 방법도 필요해졌습니다.
+
+그래서 등장하는 것이 `multipart` 타입입니다.
+
+# 파일 다운로드 -코드 설명
+
+# response.addHeader("Content-disposition", "attachment; fileName=" + fileName);
+
+- 응답 헤더에 들어가는 속성입니다
+- 응답 바디를 브라우저가 어떻게 표시해야할지 알려줍니다
+- inline 속성이 디폴트 값이며 콘텐츠를 화면에 표시해줍니다
+- attachment 속성을 줄 경우 콘텐츠를 다운로드 합니다
+- filename 옵션으로 파일명을 지정해줄 수 있습니다
+- 참고 사이트
+
+    [https://gmlwjd9405.github.io/2019/01/28/http-header-types.html](https://gmlwjd9405.github.io/2019/01/28/http-header-types.html)
 
 ---
 ## 13장
