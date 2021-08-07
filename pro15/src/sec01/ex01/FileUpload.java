@@ -35,10 +35,10 @@ public class FileUpload extends HttpServlet {
  
         File attachesDir = new File(FILE_PATH); //업로드할 파일 경로 지정
  
- 
+        //DiskFileItemFactory는 업로드된 파일을 저장할 저장소와 관련된 클래스입니다
         DiskFileItemFactory fileItemFactory = new DiskFileItemFactory();
-        fileItemFactory.setRepository(attachesDir);
-        fileItemFactory.setSizeThreshold(LIMIT_SIZE_BYTES);
+        fileItemFactory.setRepository(attachesDir); //저장할 위치를 지정
+        fileItemFactory.setSizeThreshold(LIMIT_SIZE_BYTES);//저장시 최대 가능 범위 지정
         ServletFileUpload fileUpload = new ServletFileUpload(fileItemFactory);
  
  
