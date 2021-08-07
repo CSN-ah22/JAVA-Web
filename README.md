@@ -59,7 +59,7 @@ pro11 부터는 JSP를 다룹니다 </br>
 
 그래서 등장하는 것이 `multipart` 타입입니다.
 
-# 파일 다운로드 -코드 설명
+# <파일 다운로드> -코드 설명
 
 # response.addHeader("Content-disposition", "attachment; fileName=" + fileName);
 
@@ -72,6 +72,27 @@ pro11 부터는 JSP를 다룹니다 </br>
 
     [https://gmlwjd9405.github.io/2019/01/28/http-header-types.html](https://gmlwjd9405.github.io/2019/01/28/http-header-types.html)
 
+## Cache-Control: no-cache
+
+- cache하지 말라는 뜻이 아닙니다!!! 모든 캐시를 쓰기 전에 서버에 이 캐시 진짜 써도 되냐고 물어보라는 뜻입니다.
+- 참고 사이트
+
+## **쿠키**
+
+쿠키는 브라우저에 저장되는 작은 데이터 조각으로, 임시 데이터 보관 또는 웹페이지 개인화 등에 사용됩니다.
+
+## ${pageContext.request.contextPath}
+
+- 웹 애플리케이션 경로 추출
+
+## <c:if test="${not empty file1}">
+
+- JSTL 전용 태그 TEST의 속성값이 true라면 태그 안의 코드를 실행한다
+- 조건: 개체가 빈값이 아니라면
+
+### 🌹파일 업로드 완성 참고 사이트
+
+[https://dololak.tistory.com/720](https://dololak.tistory.com/720)	
 ---
 ## 13장
 
