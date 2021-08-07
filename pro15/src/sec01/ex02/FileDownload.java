@@ -52,7 +52,7 @@ public class FileDownload extends HttpServlet {
 			int count = in.read(buffer);
 			if (count == -1)
 				break;
-			out.write(buffer, 0, count);
+			out.write(buffer, 0, count); // 0 ~ count 만큼을 buffer를 통해 writing 해줍니다
 		}
 		in.close();
 		out.close();
