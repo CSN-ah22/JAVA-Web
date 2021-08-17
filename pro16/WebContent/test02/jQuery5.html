@@ -1,10 +1,22 @@
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="EUC-KR">
+<meta charset="UTF-8">
 <title>Insert title here</title>
+<script src="http://code.jquery.com/jquery-latest.min.js"></script>
+<script type="text/javascript">
+function fn_process(){
+	var value=$("#t_input").val(); //get 구문
+	$("#t_output").val(value); //출력구문
+}
+</script>
 </head>
 <body>
-
+<input type="text" id="t_input" />
+<input type="button" value="입력하기" onClick="fn_process()" /><br><br>
+<div>
+결과:<br>
+<input type="text" id="t_output" disabled/>
+</div>
 </body>
 </html>
