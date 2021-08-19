@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>ID 중복 여부 확인하기</title>
+<script src="http://code.jquery.com/jquery-latest.min.js"></script>    
+<script type="text/javascript">
+function fn_process(){
+	var _id = $("#t_id").val(); //입력된 아이디 값을 _id 라는 변수에 할당
+	if(_id == ''){
+		alert("ID를 입력하세요");
+		return;
+	}
+	$.ajax({
+		type:"post",
+		async: true,
+		url: "http://localhost:8090/pro16/mem",
+		dataType:"text",
+		data:{id: _id}, //id를 mem 서블릿으로 전송함
+		success: function(data,textStatus){
+			if(data=='usable'){
+				$('#message').text("사용할 수 있는 ID입니다");
+				$('#btn_duplicate').prop("disabled", true); //버튼이 더는 눌리지 않게 비활성화
+			}else{
+				$('#message').text("사용할 수 없는 ID입니다");
+			}
+			
+		},
+		error:function(data,textStatus){
+            alert("에러가 발생했습니다.");ㅣ
+         },
+         complete:function(data,textStatus){
+            //alert("작업을완료 했습니다");
+         }
+		
+	}); //end ajax	
+	
+}
+</script>
+</head>
+<body>
+<input type="text" id="t_id" />
+<input type="button" id="btn_duplicate" value="ID 중복체크하기" onClick="fn_process()"><br><br>
+<div id="message"></div>
+</body>
+</html>
