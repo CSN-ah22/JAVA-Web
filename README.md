@@ -227,7 +227,7 @@ if(userID.length()==0){ //이름값의 길이가 0 이라면
 - useBean, setProperty, getProperty 액션 태그를 사용해 객체 생성부터 속성에 값을 저장하거나 가져오는 방법에 대해 알아보는것이 목표
 - 자바 빈에 대해 우선적으로 알아보겠음
 
-### 1.  **자바빈에 대해**
+## 1.  **자바빈에 대해**
 
 - 프로그래밍시 여러 객체를 거치면서 만들어지는 데이터를 저장하거나 전달하는데 사용함
 - 서블릿의 VO클래스 또는 자바의 DTO 클래스 같은 개념이라고 할 수 있음
@@ -241,7 +241,7 @@ if(userID.length()==0){ //이름값의 길이가 0 이라면
 
 ### 2. 자바 빈을 이용한 회원 정보 조회 실습
 
-🍑 🍋🍑 🍋 🍑
+
 
 ### 1. 밑바탕 준비
 
@@ -249,7 +249,7 @@ if(userID.length()==0){ //이름값의 길이가 0 이라면
 - MemberBean, MemberDAO 클래스를 추가 (서블릿X 자바O)
 - member.jsp와 memberForm.html을 생성함
 
-🍑 🍋🍑 🍋 🍑
+
 
 ### 2. MemberBean 작성
 
@@ -265,13 +265,11 @@ public MemberBean(String id, String pwd, String name, String email) {
     }
 ```
 
-🍑 🍋🍑 🍋 🍑
 
 ### 3. html 작성
 
 1. 회원 정보를 입력한 후 member.jsp로 전송하도록 memberForm.html 작성 (POST)
 
-🍑 🍋🍑 🍋 🍑
 
 ### 4. jsp 작성
 
@@ -281,7 +279,7 @@ public MemberBean(String id, String pwd, String name, String email) {
 4. 성공적으로 끝나면 listMembers() 메서드 또한 호출한다
 5. listMembers() 의 반환값을 받아 표현식으로 출력한다
 
-### DAO 수정
+#### DAO 수정
 
 **listMembers() 메서드 수정**
 
@@ -301,7 +299,7 @@ public MemberBean(String id, String pwd, String name, String email) {
 
 [JAVA-Web/pro13/src/sec01/ex01 at main · CSN-ah22/JAVA-Web](https://github.com/CSN-ah22/JAVA-Web/tree/main/pro13/src/sec01/ex01)
 
-### 2.  유즈빈 액션 태그를 이용한 회원 정보 조회 실습
+## 2.  유즈빈 액션 태그를 이용한 회원 정보 조회 실습
 
 **설명**
 
@@ -547,7 +545,95 @@ JSP는 HTML CSS 자바스크립트 및 JSP구성요소 등 복잡하게 구성�
 인클루드 디렉티브 태그 : 공통으로 사용하는 JSP 페이지를 다른 JSP 페이지에 추가할때 사용함
 
 태그라이브 디렉티브 태그 : 개발자나 프레임워크에서 제공하는 태그를 사용할때 사용합니다
+	    
 ---
+	    
+## 9장
+
+## hidden을 이용해서 로그인 상태 유지하기
+
+- 로그인이 되면 특정 값을 다른 서블릿으로 전송한다
+- 각각의 서블릿들은 특정값이 null 인지 특정값과 같은지 검사한뒤 페이지를 보여준다
+- 서블릿끼리 특정값을 매번 보내줘야 하므로 꼬일 수 있음
+- 특정값이 노출되면 모든 정보가 노출되므로 보안이 취약함
+
+## 쿠키를 이용해서 로그인 상태 유지하기
+
+- 로그인 정보가 클라이언트 PC에 저장됨
+- 정보 용량에 제한이 있음
+- 보안이 취약함
+
+**쿠키의 사용 흐름**
+
+1. 브라우저로 사이트에 접속한다
+2. 서버에서 정보를 저장한 쿠키를 생성한다
+3. 생성된 쿠키를 브라우저로 전송한다
+4. 브라우저는 받은 쿠키를 파일에 저장한다
+5. 브라우저가 다시 사이트에 접속하게 될 경우 서버에서는 쿠키 정보를 요청한다
+6. 브라우저가 쿠키를 넘겨주면 서버는 쿠키정보를 파악해 알맞은 코드를 실행한다
+7. 쿠키가 없다면 다시 생성해준다 혹은 사용자 선택하에 생성이 될 수 있다
+
+## 세션을 이용해서 로그인 상태 유지하기
+
+- 정보가 서버의 메모리에 저장된다
+- 쿠키 종류중 세션쿠키 라는것을 이용한다
+- 쿠키보다 상대적으로 보안성이 높아진다
+- 브라우저당 한 개의 세션 ID가 생성된다
+
+**세션의 사용 흐름**
+
+1. 브라우저로 사이트에 접속한다
+2. 서버는 접속한 브라우저를 목표로 단 하나만 존재하는 세션 ID를 생성한다
+3. 생성된 세션 id를 브라우저에 보낸다
+4. 브라우저는 받은 세션id를 세션쿠키 라는 쿠키의 한 종류에 저장한다
+5. 브라우저가 재접속하게될시 세션 id를 서버에 전달한다
+6. 서버는 브라우저에게 받은 세션 id를 이용해 해당 세션에 접근하여 작업을 수행한다
+
+**쿠키>>> 웹 브라우저에 저장**
+
+**세션>>>서버에 저장**
+
+## 세션을 생성하는 방법
+
+`HttpSession` 클래스 객체를 생성해서 사용해야 한다
+
+일반적으로 `HttpSession` 클래스 객체는 `HttpServeRequest`의 `getSession()`메서드를 호출해서 생성한다
+
+- `getSession()`: 기존의 세션 객체가 존재하면 반환하고, 없으면 새로 생성한다
+- `getSession(true)`: 기존의 세션 객체가 존재하면 반환하고, 없으면 새로 생성한다
+- `getSession(false)`: 기존의 세션 객체가 존재하면 반환하고, 없으면 null을 반환한다
+
+<b> HttpSession 클래스의 여러가지 세션 관련 메서드 </b>
+|반환 타입|메서드|설명|
+|------|---|---|
+|Object|getAttribute(String name)|세션에 담겨진 속성 이름중 name인 속성의 값을 반환해준다 해당 속성이 없다면 null을 반환한다|
+|void|setAttribute(String name,Object value)|세션에 이름이 name인 속성을 생성하고 값을 value로 할당한다|
+|void|removeAttribute(String name)|세션에 담겨져 있던 속성 이름이 name인 속성을 제거한다|
+|String|getId()|세션에 할당된 고유 식별자를 String 타입으로 반환한다|
+|void|invalidate()|현재 생성된 세션을 소멸한다|
+|boolean|isNew()|최초로 생성된 세션인지 기존에 생성되어 있었던 세션인지 판별한다|
+|void|setMaxInactiveInterval(int)|세션을 유지하기 위한 세션 유지 시간을 초 단위로 설정한다|
+|int|getMaxInactiveInterval()|설정된 세션 유지 시간을 int타입으로 반환함|
+
+### response.encodeURL()
+
+- 브라우저에서 쿠키 사용을 금지 시킬수 있음
+- 이럴 때는 자체적으로 서버에서 브라우저로 URL Rewirting방법을 이용해 세션 ID를 서버로 전송하게 만들어 세션을 사용한다
+
+<image src="https://user-images.githubusercontent.com/70833455/136039927-e80492ab-af08-44fb-a8d3-33750844c5ba.png" alt="encodeURL code" width="700" height="120">
+
+### Decode를 이용하여 로그인시 입력된 ID/PW가 DB에 있는지 확인하기
+
+![image](https://user-images.githubusercontent.com/70833455/136038747-cafa604c-236d-441b-868d-4c2c30b02099.png)
+
+- `decode` 는 SQL 문법이다
+- 첫번째 인수의 값이 두번째 인수의 값과 같다면 4번째 인수의 값을 , 그렇지 않다면 5번째 인수의 값을 반환한다
+- 모든 `column`값을 조회하여 `ID/PW`가 같은 값이 `1개` 있다면 `true`를 반환하고 `0개`라면 `false`를 반환한다
+- 주의! - `where` 조건으로 `id`와 `pwd`값이 입력값과 정확하게 같은지 구별 해놓지 않으면 단순히  `t_member`의 모든 `column` 개수를 조회하게 되므로 개수가 항상 1 이상이 되어 `true` 만을 반환한다
+	    
+	    
+---	    
+	    
 ## 8장
 
 ### 8.1 서블릿 포워드 기능 사용하기
