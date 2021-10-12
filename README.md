@@ -9,7 +9,7 @@
 
 ## 목 록
 
-1. [오류발생 및 해결 정리]()
+1. [오류발생 및 해결 정리](https://github.com/CSN-ah22/JAVA-Web#%EC%98%A4%EB%A5%98%EB%B0%9C%EC%83%9D-%EB%B0%8F-%ED%95%B4%EA%B2%B0-%EC%A0%95%EB%A6%AC)
 2. [공부 기록]()
 
 ---
