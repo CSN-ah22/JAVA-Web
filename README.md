@@ -16,6 +16,9 @@
 
 ### 오류발생 및 해결 정리
 
+<details>
+<summary>단축 버튼</summary> 
+	
 #### ◻ 문제발생 1
 
 ```
@@ -118,18 +121,27 @@ JDBC 오라클 드라이버가 없어서 발생한 오류
 
 </details>
 
----
-## 15장 - 파일 업로드, 파일 다운로드
+</details>
 
-## enctype 의 속성 **Multipart**
+
+---
+<br><br>
+	
+## 공부 기록	
+	
+### 15장 - 파일 업로드, 파일 다운로드
+
+#### enctype 의 속성 **Multipart** 를 알아보자
 
 - **enctype**
 - **폼 데이터(form data)가 서버로 제출될 때 해당 데이터가 인코딩되는 방법을 명시합니다.**
 - 참고 사이트
 
     [Multipart/form-data란?](https://junghyun100.github.io/Multipart_form-data/)
+	
+	<br>
 
-# **enctype 속성값**
+### **enctype 속성값**
 
 - application/x-www-form-urlencoded
 
@@ -143,9 +155,14 @@ JDBC 오라클 드라이버가 없어서 발생한 오류
 
     > 모든 문자를 인코딩하지 않음을 명시합니다.이 방식은 <form> 요소가 파일이나 이미지를 서버로 전송할 때 주로 사용합니다
 
-# **getParameter()의 사용이 불가한 이유**
+	<br>
 
-`POST` 방식에서 `request.getParameter()`메서드를
+#### 파일 데이터를 주고 받을시 getParameter() 사용이 불가하다 
+	
+<details>
+<summary>이유 설명</summary>
+	
+`POST` 방식에서`request.getParameter()`메서드를
 
 `WAS`에서 알아서 처리할 수 있도록 되어있는 이유는
 
@@ -158,8 +175,13 @@ JDBC 오라클 드라이버가 없어서 발생한 오류
 따라서. 이미지를 위해서 전송하는 경우 `enctype`가 `Multipart`로 설정해야하기 때문에
 
 `request.getParameter()`로 데이터를 불러올 수 없게 됩니다.
+	
+</details>	
 
-# **Multipart가 생긴 이유**
+### **Multipart가 생긴 이유**
+
+<details>
+<summary>이유 설명</summary>
 
 파일을 업로드 할 때, 사진 설명을 위한 `input`과 사진을 위한 `input` 2개가 들어간다고 가정합니다.
 
@@ -172,10 +194,11 @@ JDBC 오라클 드라이버가 없어서 발생한 오류
 한 `Body`에서 이 2 종류의 데이터를 구분에서 넣어주는 방법도 필요해졌습니다.
 
 그래서 등장하는 것이 `multipart` 타입입니다.
+</details>	
 
-# <파일 다운로드> -코드 설명
+### <파일 다운로드> -코드 설명
 
-# response.addHeader("Content-disposition", "attachment; fileName=" + fileName);
+#### response.addHeader("Content-disposition", "attachment; fileName=" + fileName);
 
 - 응답 헤더에 들어가는 속성입니다
 - 응답 바디를 브라우저가 어떻게 표시해야할지 알려줍니다
@@ -191,15 +214,15 @@ JDBC 오라클 드라이버가 없어서 발생한 오류
 - cache하지 말라는 뜻이 아닙니다!!! 모든 캐시를 쓰기 전에 서버에 이 캐시 진짜 써도 되냐고 물어보라는 뜻입니다.
 - 참고 사이트
 
-## **쿠키**
+### **쿠키**
 
 쿠키는 브라우저에 저장되는 작은 데이터 조각으로, 임시 데이터 보관 또는 웹페이지 개인화 등에 사용됩니다.
 
-## ${pageContext.request.contextPath}
+### ${pageContext.request.contextPath}
 
 - 웹 애플리케이션 경로 추출
 
-## <c:if test="${not empty file1}">
+### <c:if test="${not empty file1}">
 
 - JSTL 전용 태그 TEST의 속성값이 true라면 태그 안의 코드를 실행한다
 - 조건: 개체가 빈값이 아니라면
